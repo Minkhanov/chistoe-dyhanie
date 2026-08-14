@@ -1,0 +1,19 @@
+{
+  "name": "Чистое дыхание — путь свободы",
+  "short_name": "Чистое дыхание",
+  "description": "Счётчик дней без сигарет, восстановление организма по срокам и опора веры.",
+  "lang": "ru",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#12332E",
+  "theme_color": "#12332E",
+  "categories": ["health", "lifestyle"],
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
