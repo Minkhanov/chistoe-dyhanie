@@ -1,0 +1,580 @@
+<title>Чистое дыхание — путь свободы</title>
+<style>
+  :root{
+    --ink:#0E2A26; --deep:#12332E; --card:#173D37; --line:#245247;
+    --mist:#E9F2EE; --paper:#F7FBF9; --pcard:#FFFFFF; --pline:#D3E4DD;
+    --pine:#1F6F5C; --pine-soft:#2E8A73; --gold:#D9A441; --gold-soft:#E7C077;
+    --bg:var(--mist); --surface:var(--pcard); --surface2:var(--paper);
+    --border:var(--pline); --text:#12332E; --text-soft:#476B62; --accent:var(--pine);
+    --accent-2:var(--gold); --ok:#2E8A73; --tap:44px;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{ --bg:var(--ink); --surface:var(--deep); --surface2:var(--card);
+      --border:var(--line); --text:#E9F2EE; --text-soft:#9DBFB4; --accent:#3FA88C; --accent-2:var(--gold-soft); }
+  }
+  :root[data-theme="dark"]{ --bg:var(--ink); --surface:var(--deep); --surface2:var(--card);
+      --border:var(--line); --text:#E9F2EE; --text-soft:#9DBFB4; --accent:#3FA88C; --accent-2:var(--gold-soft); }
+  :root[data-theme="light"]{ --bg:var(--mist); --surface:var(--pcard); --surface2:var(--paper);
+      --border:var(--pline); --text:#12332E; --text-soft:#476B62; --accent:var(--pine); --accent-2:var(--gold); }
+
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--bg); color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,sans-serif;
+    line-height:1.5; -webkit-font-smoothing:antialiased;
+    padding-bottom:calc(76px + env(safe-area-inset-bottom,0px));
+  }
+  .wrap{max-width:430px;margin:0 auto;padding:0 16px}
+  .screen{display:none;animation:fade .25s ease}
+  .screen.active{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  @media (prefers-reduced-motion: reduce){ .screen{animation:none} }
+
+  header.app{
+    padding:calc(14px + env(safe-area-inset-top,0px)) 0 10px;
+    display:flex;align-items:center;justify-content:space-between;
+  }
+  .brand{font-family:ui-serif,"New York",Georgia,serif;font-size:20px;font-weight:600;letter-spacing:.2px}
+  .brand small{display:block;font-family:-apple-system,BlinkMacSystemFont,sans-serif;
+    font-size:11px;font-weight:500;color:var(--text-soft);letter-spacing:.08em;text-transform:uppercase}
+  .gear{width:var(--tap);height:var(--tap);border:none;background:var(--surface);color:var(--text-soft);
+    border-radius:12px;font-size:18px;display:grid;place-items:center;border:1px solid var(--border)}
+  .gear:focus-visible,.tab:focus-visible,button:focus-visible{outline:2px solid var(--accent-2);outline-offset:2px}
+
+  /* ГЕРОЙ-СЧЁТЧИК */
+  .hero{position:relative;background:var(--surface);border:1px solid var(--border);border-radius:20px;
+    padding:22px 18px 18px;overflow:hidden}
+  .hero::after{content:"";position:absolute;inset:auto -30% -55% -30%;height:70%;
+    background:radial-gradient(50% 60% at 50% 0%, color-mix(in srgb, var(--accent) 22%, transparent), transparent 70%);
+    pointer-events:none}
+  .ring{width:230px;height:230px;margin:4px auto 8px;position:relative}
+  .ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+  .ring .track{stroke:var(--border);stroke-width:10;fill:none}
+  .ring .bar{stroke:var(--accent-2);stroke-width:10;fill:none;stroke-linecap:round;
+    transition:stroke-dashoffset .6s ease}
+  .ring .core{position:absolute;inset:0;display:grid;place-items:center;text-align:center}
+  .days{font-family:ui-serif,"New York",Georgia,serif;font-size:64px;font-weight:700;line-height:1;
+    font-variant-numeric:tabular-nums}
+  .days-label{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-soft);margin-top:4px}
+  .hms{margin-top:6px;font-size:15px;color:var(--text-soft);font-variant-numeric:tabular-nums}
+  .next-mile{margin-top:10px;text-align:center;font-size:13px;color:var(--text-soft)}
+  .next-mile b{color:var(--accent-2);font-weight:600}
+
+  .stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+  .stat{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:14px}
+  .stat .num{font-family:ui-serif,"New York",Georgia,serif;font-size:26px;font-weight:700;
+    font-variant-numeric:tabular-nums}
+  .stat .cap{font-size:11.5px;color:var(--text-soft);letter-spacing:.06em;text-transform:uppercase;margin-top:2px}
+  .stat.gold .num{color:var(--accent-2)}
+
+  .quote{margin-top:12px;background:var(--surface);border:1px solid var(--border);border-radius:16px;
+    padding:16px;font-family:ui-serif,"New York",Georgia,serif;font-size:16.5px;line-height:1.55}
+  .quote .who{margin-top:8px;font-family:-apple-system,sans-serif;font-size:12px;color:var(--text-soft);
+    letter-spacing:.05em;text-transform:uppercase}
+
+  h2.sec{font-family:ui-serif,"New York",Georgia,serif;font-size:22px;margin:22px 0 4px;text-wrap:balance}
+  p.sub{margin:0 0 14px;font-size:13.5px;color:var(--text-soft)}
+
+  /* ТЕЛО — таймлайн */
+  .tl{list-style:none;margin:0;padding:0;position:relative}
+  .tl::before{content:"";position:absolute;left:15px;top:8px;bottom:8px;width:2px;
+    background:var(--border);border-radius:2px}
+  .tl li{position:relative;padding:0 0 14px 44px}
+  .tl .dot{position:absolute;left:7px;top:4px;width:18px;height:18px;border-radius:50%;
+    background:var(--surface);border:2px solid var(--border);display:grid;place-items:center;font-size:10px;color:transparent}
+  .tl li.done .dot{background:var(--accent);border-color:var(--accent);color:#fff}
+  .tl li.now .dot{border-color:var(--accent-2);box-shadow:0 0 0 4px color-mix(in srgb, var(--accent-2) 25%, transparent)}
+  .tl .card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:12px 14px}
+  .tl li.done .card{border-color:color-mix(in srgb, var(--accent) 45%, var(--border))}
+  .tl .when{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-soft)}
+  .tl li.done .when{color:var(--accent)}
+  .tl li.now .when{color:var(--accent-2)}
+  .tl .what{font-size:14.5px;margin-top:2px}
+  .tl .bar{height:5px;border-radius:3px;background:var(--border);margin-top:9px;overflow:hidden}
+  .tl .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-2));
+    border-radius:3px;transition:width .5s ease}
+  .tl .pct{font-size:11px;color:var(--text-soft);margin-top:4px;font-variant-numeric:tabular-nums}
+
+  /* ЗАДАНИЯ */
+  .task-day{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:16px}
+  .task-day .eyebrow{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent-2);font-weight:600}
+  .task-day h3{margin:6px 0 8px;font-family:ui-serif,"New York",Georgia,serif;font-size:19px}
+  .task-day p{margin:0;font-size:14.5px;color:var(--text-soft)}
+  .task-read{margin-top:12px;padding:13px;border-radius:12px;background:var(--surface2);
+    border:1px dashed var(--border);font-family:ui-serif,"New York",Georgia,serif;font-size:15.5px;line-height:1.55}
+  .check{margin-top:14px;display:flex;gap:10px;align-items:center}
+  .btn{flex:1;min-height:var(--tap);border:none;border-radius:13px;font-size:15.5px;font-weight:600;
+    background:var(--accent);color:#fff;cursor:pointer}
+  .btn[disabled]{background:var(--ok);opacity:.92}
+  .btn.ghost{background:transparent;color:var(--accent);border:1.5px solid var(--accent)}
+  .streak{display:flex;gap:6px;margin-top:14px;flex-wrap:wrap}
+  .streak i{width:26px;height:26px;border-radius:8px;background:var(--surface2);border:1px solid var(--border);
+    display:grid;place-items:center;font-style:normal;font-size:12px;color:var(--text-soft)}
+  .streak i.on{background:var(--accent);border-color:var(--accent);color:#fff}
+  .streak i.today{outline:2px solid var(--accent-2);outline-offset:1px}
+  .progress-line{margin-top:10px;font-size:13px;color:var(--text-soft)}
+  .progress-line b{color:var(--text)}
+
+  /* ОПОРА — вера */
+  .ayah{background:var(--surface);border:1px solid var(--border);border-left:4px solid var(--accent-2);
+    border-radius:14px;padding:15px 16px;margin-bottom:12px}
+  .ayah .ar{font-size:21px;line-height:1.9;text-align:right;direction:rtl;
+    font-family:"Geeza Pro","Al Nile",serif}
+  .ayah .tr{margin-top:9px;font-size:13.5px;font-style:italic;color:var(--accent);line-height:1.5}
+  .ayah .ru{margin-top:8px;font-family:ui-serif,"New York",Georgia,serif;font-size:15.5px;line-height:1.55}
+  .ayah .src{margin-top:8px;font-size:12px;color:var(--text-soft);letter-spacing:.05em;text-transform:uppercase}
+  .note{background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:13px 15px;
+    font-size:13.5px;color:var(--text-soft);margin-bottom:12px}
+
+  /* НАСТРОЙКИ */
+  .field{margin-bottom:14px}
+  .field label{display:block;font-size:12.5px;letter-spacing:.05em;text-transform:uppercase;
+    color:var(--text-soft);margin-bottom:6px}
+  .field input{width:100%;min-height:var(--tap);border:1px solid var(--border);border-radius:12px;
+    background:var(--surface);color:var(--text);font-size:16px;padding:0 14px;
+    font-variant-numeric:tabular-nums}
+  .hint{font-size:12.5px;color:var(--text-soft);margin-top:-6px;margin-bottom:14px}
+
+  /* ТАБЫ */
+  nav.tabs{position:fixed;left:0;right:0;bottom:0;z-index:10;
+    background:color-mix(in srgb, var(--bg) 88%, transparent);
+    -webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
+    border-top:1px solid var(--border);
+    padding:8px 10px calc(8px + env(safe-area-inset-bottom,0px))}
+  .tabs .row{max-width:430px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+  .tab{min-height:52px;border:none;background:transparent;color:var(--text-soft);border-radius:12px;
+    font-size:11px;letter-spacing:.02em;display:grid;place-items:center;gap:2px;cursor:pointer}
+  .tab .ico{font-size:20px;line-height:1}
+  .tab.active{color:var(--accent);background:color-mix(in srgb, var(--accent) 12%, transparent);font-weight:600}
+
+  .milestone-flash{position:fixed;inset:0;display:none;place-items:center;z-index:50;
+    background:color-mix(in srgb, var(--ink) 55%, transparent)}
+  .milestone-flash.show{display:grid}
+  .mf-card{background:var(--surface);border:1px solid var(--accent-2);border-radius:20px;
+    padding:26px 22px;max-width:320px;text-align:center;margin:0 16px}
+  .mf-card .big{font-size:40px}
+  .mf-card h3{font-family:ui-serif,"New York",Georgia,serif;margin:8px 0}
+  .mf-card p{color:var(--text-soft);font-size:14px;margin:0 0 16px}
+</style>
+
+<div class="wrap">
+  <header class="app">
+    <div class="brand">Чистое дыхание<small>путь свободы</small></div>
+    <button class="gear" id="gearBtn" aria-label="Настройки">⚙︎</button>
+  </header>
+
+  <!-- ЭКРАН: СЕГОДНЯ -->
+  <section class="screen active" id="scr-today">
+    <div class="hero">
+      <div class="ring">
+        <svg viewBox="0 0 230 230" aria-hidden="true">
+          <circle class="track" cx="115" cy="115" r="104"></circle>
+          <circle class="bar" id="ringBar" cx="115" cy="115" r="104"
+            stroke-dasharray="653.45" stroke-dashoffset="653.45"></circle>
+        </svg>
+        <div class="core">
+          <div>
+            <div class="days" id="bigDays">0</div>
+            <div class="days-label" id="bigDaysLabel">дней свободы</div>
+            <div class="hms" id="hms">0 ч 00 мин 00 с</div>
+          </div>
+        </div>
+      </div>
+      <div class="next-mile" id="nextMile">До следующей вехи: —</div>
+    </div>
+
+    <div class="stats">
+      <div class="stat gold">
+        <div class="num" id="moneySaved">0 ₽</div>
+        <div class="cap">сэкономлено</div>
+      </div>
+      <div class="stat">
+        <div class="num" id="cigsAvoided">0</div>
+        <div class="cap">сигарет не выкурено</div>
+      </div>
+      <div class="stat">
+        <div class="num" id="lifeMinutes">0 ч</div>
+        <div class="cap">жизни возвращено*</div>
+      </div>
+      <div class="stat">
+        <div class="num" id="tasksDone">0</div>
+        <div class="cap">заданий выполнено</div>
+      </div>
+    </div>
+    <p class="hint" style="margin-top:8px">*из расчёта ~11 минут на сигарету — оценка врачей, не приговор.</p>
+
+    <div class="quote">
+      <div id="quoteText">…</div>
+      <div class="who" id="quoteWho">мотивация дня</div>
+    </div>
+  </section>
+
+  <!-- ЭКРАН: ТЕЛО -->
+  <section class="screen" id="scr-body">
+    <h2 class="sec">Организм восстанавливается</h2>
+    <p class="sub">Каждая веха — по данным ВОЗ и кардиологических ассоциаций. Зелёное — пройдено, золотое — идёт сейчас.</p>
+    <ul class="tl" id="timeline"></ul>
+  </section>
+
+  <!-- ЭКРАН: ЗАДАНИЯ -->
+  <section class="screen" id="scr-tasks">
+    <h2 class="sec">Задание дня</h2>
+    <p class="sub" id="taskDayNo">День 1</p>
+    <div class="task-day">
+      <div class="eyebrow" id="taskKind">практика</div>
+      <h3 id="taskTitle">…</h3>
+      <p id="taskWhy">…</p>
+      <div class="task-read" id="taskRead" hidden></div>
+      <div class="check">
+        <button class="btn" id="doneBtn">Выполнил</button>
+      </div>
+    </div>
+    <div class="progress-line" id="streakLine">Серия: <b>0 дней подряд</b></div>
+    <div class="streak" id="streakGrid" aria-label="Последние 14 дней"></div>
+  </section>
+
+  <!-- ЭКРАН: ОПОРА -->
+  <section class="screen" id="scr-faith">
+    <h2 class="sec">Опора веры</h2>
+    <p class="sub">Аяты Корана и хадисы, на которых учёные основывают запрет курения. Читай, когда тянет.</p>
+    <div id="faithList"></div>
+    <div class="note">«Курение табака запретно (харам), а иные мнения, подходы, трактовки данного вопроса — слабость воли или рассудка» — вывод Шамиля Аляутдинова в статье «Курение сигарет и Ислам» (umma.ru). Его же совет бросающему: проявить силу воли, пожелать, вознамериться — и освободиться от никотиновой зависимости, не выстраивая себе искусственных препятствий.</div>
+  </section>
+
+  <!-- ЭКРАН: НАСТРОЙКИ -->
+  <section class="screen" id="scr-setup">
+    <h2 class="sec">Настройки</h2>
+    <p class="sub">Ответь честно — от этого считаются все цифры.</p>
+    <div class="field">
+      <label for="quitAt">Дата и время последней сигареты</label>
+      <input type="datetime-local" id="quitAt">
+    </div>
+    <div class="field">
+      <label for="perDay">Сколько курил в день, штук</label>
+      <input type="number" id="perDay" min="1" max="80" inputmode="numeric" placeholder="20">
+    </div>
+    <div class="field">
+      <label for="packPrice">Цена пачки, ₽</label>
+      <input type="number" id="packPrice" min="50" max="1500" inputmode="numeric" placeholder="250">
+    </div>
+    <div class="field">
+      <label for="packSize">Сигарет в пачке</label>
+      <input type="number" id="packSize" min="10" max="40" inputmode="numeric" placeholder="20">
+    </div>
+    <div class="check">
+      <button class="btn" id="saveBtn">Сохранить</button>
+      <button class="btn ghost" id="resetBtn">Сорвался — начать заново</button>
+    </div>
+    <p class="hint" style="margin-top:12px">Срыв — не поражение, а ступенька. Пророк ﷺ сказал: «Лучшие из ошибающихся — кающиеся».</p>
+  </section>
+</div>
+
+<nav class="tabs">
+  <div class="row">
+    <button class="tab active" data-scr="today"><span class="ico">🕊</span>Сегодня</button>
+    <button class="tab" data-scr="body"><span class="ico">🫁</span>Тело</button>
+    <button class="tab" data-scr="tasks"><span class="ico">📿</span>Задания</button>
+    <button class="tab" data-scr="faith"><span class="ico">☪︎</span>Опора</button>
+  </div>
+</nav>
+
+<div class="milestone-flash" id="mf">
+  <div class="mf-card">
+    <div class="big">🌙</div>
+    <h3 id="mfTitle">Веха пройдена!</h3>
+    <p id="mfText"></p>
+    <button class="btn" id="mfClose">Альхамдулиллях</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var LS = "chistoe-dyhanie-v1";
+  var state = load();
+
+  function load(){
+    try { return JSON.parse(localStorage.getItem(LS)) || {}; } catch(e){ return {}; }
+  }
+  function save(){ localStorage.setItem(LS, JSON.stringify(state)); }
+
+  /* ---------- ДАННЫЕ ---------- */
+  var MILES = [
+    {m:20/60/24,        t:"20 минут",  w:"Пульс и давление вернулись к норме, кровообращение кистей и стоп улучшается."},
+    {m:0.5,             t:"12 часов",  w:"Угарный газ выведен, уровень кислорода в крови — как у некурящего."},
+    {m:1,               t:"24 часа",   w:"Риск сердечного приступа начал снижаться."},
+    {m:2,               t:"48 часов",  w:"Нервные окончания восстанавливаются: вкус и запах возвращаются."},
+    {m:3,               t:"72 часа",   w:"Бронхи расслабились, дышать стало заметно легче, энергия растёт."},
+    {m:14,              t:"2 недели",  w:"Кровообращение улучшилось, ходьба и подъёмы даются легче."},
+    {m:30,              t:"1 месяц",   w:"Функция лёгких растёт, кашель и одышка отступают."},
+    {m:90,              t:"3 месяца",  w:"Реснички в лёгких восстановились — лёгкие сами чистятся от слизи."},
+    {m:270,             t:"9 месяцев", w:"Кашель курильщика ушёл, дыхание свободное, инфекции реже."},
+    {m:365,             t:"1 год",     w:"Риск ишемической болезни сердца — вдвое ниже, чем у курящего."},
+    {m:365*5,           t:"5 лет",     w:"Риск инсульта снизился до уровня некурящего человека."},
+    {m:365*10,          t:"10 лет",    w:"Риск рака лёгких — вдвое ниже; отступают риски рака рта, горла, пищевода."},
+    {m:365*15,          t:"15 лет",    w:"Риск болезней сердца — как у человека, который никогда не курил."}
+  ];
+
+  var FAITH = [
+    {ar:"وَلَا تَقْتُلُوا أَنفُسَكُمْ ۚ إِنَّ اللَّهَ كَانَ بِكُمْ رَحِيمًا",
+     tr:"Ва ля тактулю анфусакум, инна-Ллаха кяна бикум рахима",
+     ru:"«Не убивайте самих себя! Воистину, Аллах (Бог, Господь) необычайно Милостив к вам».",
+     src:"Коран, 4:29 — перевод Ш. Аляутдинова, umma.ru"},
+    {ar:"إِنَّ الْمُبَذِّرِينَ كَانُوا إِخْوَانَ الشَّيَاطِينِ",
+     tr:"Инналь-мубаззирина кяню ихвана-ш-шаятын",
+     ru:"«Вне всяких сомнений, расточительные являются братьями Сатаны (дьяволов)…»",
+     src:"Коран, 17:27 — перевод Ш. Аляутдинова, umma.ru"},
+    {ar:"وَكُلُوا وَاشْرَبُوا وَلَا تُسْرِفُوا ۚ إِنَّهُ لَا يُحِبُّ الْمُسْرِفِينَ",
+     tr:"Ва кулю ва-шрабу ва ля тусрифу, иннаху ля юхиббуль-мусрифин",
+     ru:"«Ешьте, пейте и не расточительствуйте… Воистину, Он не любит расточительных».",
+     src:"Коран, 7:31 — перевод Ш. Аляутдинова, umma.ru"},
+    {ar:"وَيَضَعُ عَنْهُمْ إِصْرَهُمْ وَالْأَغْلَالَ الَّتِي كَانَتْ عَلَيْهِمْ",
+     tr:"Ва яда‘у ‘анхум исрахум валь-аглялял-ляти кянат ‘алейхим",
+     ru:"«Снимет тяжесть (бремя) и оковы (цепи, кандалы, наручники)…» — о миссии Пророка ﷺ, освобождающего людей от губительного.",
+     src:"Коран, 7:157 — перевод Ш. Аляутдинова, umma.ru"},
+    {ar:"لَا ضَرَرَ وَلَا ضِرَارَ",
+     tr:"Ля дарара ва ля дырар",
+     ru:"«[В Исламе] нет нанесения ущерба (убытка) и вредительства».",
+     src:"Хадис — Сунан Ибн Маджа, № 2340–2341 (цит. по umma.ru)"}
+  ];
+
+  var QUOTES = [
+    "Тяга живёт три минуты. Ты — дольше.",
+    "Ты не «бросаешь» — ты возвращаешь себе своё.",
+    "Каждый вдох без дыма — вдох на своей стороне.",
+    "Сильный не тот, кто держит сигарету, а тот, кто держит слово.",
+    "Сегодняшняя тяга — завтрашняя гордость.",
+    "Деньги, что горели, теперь работают на тебя.",
+    "Твои лёгкие уже празднуют. Не прерывай праздник.",
+    "Свобода пахнет не дымом, а утренним воздухом.",
+    "Ты уже прошёл больше, чем осталось до следующей вехи.",
+    "Одна сигарета не «одна» — это дверь назад. Не открывай.",
+    "Пусть руки будут заняты чётками, а не пачкой.",
+    "Организм умеет прощать — дай ему время.",
+    "Не считай, сколько терпишь. Считай, сколько выиграл.",
+    "Сон лучше, кожа чище, шаг легче — это всё ты.",
+    "Самая дорогая сигарета — первая после отказа. Она стоит всей серии."
+  ];
+
+  var TASKS = [
+    {k:"чтение",  t:"Прочитай аят о запрете губить себя", w:"Утверди намерение: отказ — ради Аллаха и ради жизни.", read:"«Не убивайте самих себя! Воистину, Аллах необычайно Милостив к вам» (Коран, 4:29, перевод Ш. Аляутдинова). Курение — медленное самоповреждение. Сегодня ты выбираешь жизнь."},
+    {k:"практика",t:"Стакан воды при каждой тяге",            w:"Вода сбивает пик тяги за 2–3 минуты и вымывает никотин быстрее."},
+    {k:"тело",    t:"15 минут пешком после ужина",            w:"Движение перезапускает дофамин — тот самый, что просил сигарету."},
+    {k:"чтение",  t:"Прочитай аят об оковах, которые снимаются", w:"Пророк ﷺ послан освободить людей от губительного.", read:"«Снимет тяжесть (бремя) и оковы…» (Коран, 7:157, перевод Ш. Аляутдинова). Сигарета — та самая окова. Сегодня она разжимается."},
+    {k:"практика",t:"Дыхание 4–7–8 трижды в день",            w:"Вдох 4 счёта, задержка 7, выдох 8. Это гасит тягу без никотина."},
+    {k:"деньги",  t:"Переведи сэкономленное на отдельный счёт",w:"Пусть выгода станет видимой: открой копилку «Свобода» и пополни её."},
+    {k:"чтение",  t:"Прочитай аят о расточительстве",         w:"Деньги в дым — путь братьев Сатаны.", read:"«Вне всяких сомнений, расточительные являются братьями Сатаны…» (Коран, 17:27, перевод Ш. Аляутдинова). Посчитай на главном экране, сколько уже спасено."},
+    {k:"практика",t:"Убери все зажигалки и пепельницы",       w:"Среда сильнее воли: пусть дома не останется ни одного якоря."},
+    {k:"тело",    t:"Замени перекур на сивак или зубочистку", w:"Рукам и рту нужен ритуал — дай им безвредный."},
+    {k:"чтение",  t:"Прочитай хадис о запрете вредить", w:"Пассивный дым вредит семье.", read:"«[В Исламе] нет нанесения ущерба и вредительства» (Сунан Ибн Маджа, № 2340–2341). Твой отказ — защита близких."},
+    {k:"общение", t:"Скажи близкому человеку о своём решении", w:"Слово, сказанное вслух, держит крепче никотинового пластыря."},
+    {k:"практика",t:"Составь список трёх «опасных» ситуаций", w:"Кофе? Стресс? Руль? Напиши, чем заменишь сигарету в каждой."},
+    {k:"тело",    t:"Сегодня — фрукты вместо конфет",         w:"Сахарные качели усиливают тягу; фрукты дают ровную энергию."},
+    {k:"чтение",  t:"Прочитай вывод учёных о курении",        w:"Ясность решения убирает торг с собой.", read:"«Курение табака запретно (харам), а иные мнения — слабость воли или рассудка» (Ш. Аляутдинов, umma.ru). Торга нет. Заметь сегодня хотя бы одно возмещение: сон, вкус еды, лёгкий подъём."},
+    {k:"практика",t:"Позвони или напиши тому, кто бросил",    w:"Опыт прошедшего путь — карта для идущего."},
+    {k:"деньги",  t:"Запланируй награду за 30 дней",          w:"Выбери подарок себе на сэкономленные деньги — запиши его."},
+    {k:"тело",    t:"10 приседаний при сильной тяге",         w:"Кровь побежала — тяга ушла. Работает безотказно."},
+    {k:"чтение",  t:"Прочитай аят об умеренности",            w:"Излишество Аллах не любит — в еде, питье и дыме.", read:"«Ешьте, пейте и не расточительствуйте… Воистину, Он не любит расточительных» (Коран, 7:31, перевод Ш. Аляутдинова). Милость — в каждом чистом вдохе."},
+    {k:"практика",t:"Вечером — тёплый душ вместо «последней»",w:"Ритуал завершения дня без дыма перестраивает привычку."},
+    {k:"общение", t:"Один день не критикуй себя ни разу",     w:"Стыд толкает к сигарете; благодарность — от неё."},
+    {k:"тело",    t:"Проветри и вымой машину/куртку от запаха",w:"Старый запах — триггер. Убери его физически."},
+    {k:"практика",t:"Напиши «письмо себе курящему»",          w:"Три предложения: почему ты больше не вернёшься."},
+    {k:"деньги",  t:"Посчитай экономию за год вперёд",        w:"Умножь дневную экономию на 365. Это твой хадж-фонд? Умра? Обучение детей?"},
+    {k:"чтение",  t:"Повтори любимый аят из «Опоры»",         w:"Выбери тот, что держит сильнее всего, — выучи наизусть."},
+    {k:"тело",    t:"Сон до полуночи сегодня",                w:"Недосып — главный друг срыва. Выспись назло привычке."},
+    {k:"практика",t:"День без кофе после обеда",              w:"Кофеин у бывших курильщиков усваивается вдвое сильнее — меньше дёрганости, меньше тяги."},
+    {k:"общение", t:"Сделай дуа за того, кто ещё курит",      w:"Помогая другому сердцем, укрепляешь своё."},
+    {k:"тело",    t:"Глубокая прогулка 30 минут",             w:"Лёгкие уже чище — дай им работу, которой они рады."},
+    {k:"практика",t:"Пересчитай свои вехи на экране «Тело»",  w:"Посмотри, что уже пройдено. Это сделал ты."},
+    {k:"чтение",  t:"Итог месяца: перечитай все аяты «Опоры»",w:"Закрепи фундамент.", read:"Пролистай экран «Опора» целиком, не спеша. Каждый текст — кирпич в стене между тобой и сигаретой."}
+  ];
+
+  /* ---------- ХЕЛПЕРЫ ---------- */
+  function $(id){ return document.getElementById(id); }
+  function fmtMoney(v){
+    return new Intl.NumberFormat("ru-RU",{maximumFractionDigits:0}).format(v) + " ₽";
+  }
+  function plural(n, a, b, c){
+    var n10=n%10, n100=n%100;
+    if(n10===1 && n100!==11) return a;
+    if(n10>=2 && n10<=4 && (n100<10||n100>=20)) return b;
+    return c;
+  }
+  function dayKey(d){ return d.toISOString().slice(0,10); }
+
+  /* ---------- РАСЧЁТЫ ---------- */
+  function elapsed(){
+    if(!state.quitAt) return 0;
+    return Math.max(0, Date.now() - new Date(state.quitAt).getTime());
+  }
+  function daysFloat(){ return elapsed() / 86400000; }
+
+  /* ---------- РЕНДЕР: СЕГОДНЯ ---------- */
+  var CIRC = 2 * Math.PI * 104;
+  function renderToday(){
+    var ms = elapsed(), d = daysFloat();
+    var fullDays = Math.floor(d);
+    $("bigDays").textContent = fullDays;
+    $("bigDaysLabel").textContent = plural(fullDays,"день свободы","дня свободы","дней свободы");
+    var h = Math.floor(ms/3600000)%24, m = Math.floor(ms/60000)%60, s = Math.floor(ms/1000)%60;
+    $("hms").textContent = h+" ч "+String(m).padStart(2,"0")+" мин "+String(s).padStart(2,"0")+" с";
+
+    var next = MILES.find(function(x){ return d < x.m; });
+    var prevM = 0;
+    if(next){
+      for(var i=0;i<MILES.length;i++){ if(MILES[i].m < next.m && d >= MILES[i].m) prevM = MILES[i].m; }
+      var frac = (d - prevM) / (next.m - prevM);
+      frac = Math.min(1, Math.max(0, frac));
+      $("ringBar").style.strokeDashoffset = String(CIRC * (1 - frac));
+      var left = next.m - d;
+      var leftTxt = left >= 1 ? Math.ceil(left)+" "+plural(Math.ceil(left),"день","дня","дней")
+                              : Math.ceil(left*24)+" ч";
+      $("nextMile").innerHTML = "До вехи «<b>"+next.t+"</b>» осталось "+leftTxt;
+    } else {
+      $("ringBar").style.strokeDashoffset = "0";
+      $("nextMile").innerHTML = "<b>Все вехи пройдены.</b> Ты свободен полностью.";
+    }
+
+    var perDay = state.perDay||20, price = state.packPrice||250, size = state.packSize||20;
+    var cigs = d * perDay;
+    $("moneySaved").textContent = fmtMoney(cigs/size*price);
+    $("cigsAvoided").textContent = Math.floor(cigs);
+    var lifeMin = cigs*11;
+    $("lifeMinutes").textContent = lifeMin>=60 ? Math.floor(lifeMin/60)+" ч" : Math.floor(lifeMin)+" мин";
+    $("tasksDone").textContent = Object.keys(state.done||{}).length;
+
+    var qi = Math.floor(d) % QUOTES.length;
+    $("quoteText").textContent = "«"+QUOTES[qi]+"»";
+  }
+
+  /* ---------- РЕНДЕР: ТЕЛО ---------- */
+  function renderBody(){
+    var d = daysFloat(), html = "";
+    MILES.forEach(function(x){
+      var done = d >= x.m;
+      var prev = 0;
+      MILES.forEach(function(y){ if(y.m<x.m) prev = Math.max(prev, y.m); });
+      var isNow = !done && d >= prev;
+      var frac = done ? 1 : (isNow ? Math.max(0,(d-prev)/(x.m-prev)) : 0);
+      html += '<li class="'+(done?"done":(isNow?"now":""))+'">'
+        + '<span class="dot">✓</span><div class="card">'
+        + '<div class="when">'+x.t+(done?" — пройдено":(isNow?" — идёт сейчас":""))+'</div>'
+        + '<div class="what">'+x.w+'</div>'
+        + (done?"":'<div class="bar"><i style="width:'+(frac*100).toFixed(1)+'%"></i></div><div class="pct">'+(frac*100).toFixed(0)+' %</div>')
+        + '</div></li>';
+    });
+    $("timeline").innerHTML = html;
+  }
+
+  /* ---------- РЕНДЕР: ЗАДАНИЯ ---------- */
+  function renderTasks(){
+    var dayNo = Math.max(1, Math.floor(daysFloat()) + 1);
+    var task = TASKS[(dayNo-1) % TASKS.length];
+    $("taskDayNo").textContent = "День "+dayNo+" без дыма";
+    $("taskKind").textContent = task.k;
+    $("taskTitle").textContent = task.t;
+    $("taskWhy").textContent = task.w;
+    if(task.read){ $("taskRead").hidden = false; $("taskRead").textContent = task.read; }
+    else { $("taskRead").hidden = true; }
+
+    var today = dayKey(new Date());
+    var done = state.done||{};
+    var isDone = !!done[today];
+    $("doneBtn").disabled = isDone;
+    $("doneBtn").textContent = isDone ? "Выполнено ✓" : "Выполнил";
+
+    var streak = 0, cur = new Date();
+    while(done[dayKey(cur)]){ streak++; cur.setDate(cur.getDate()-1); }
+    $("streakLine").innerHTML = "Серия: <b>"+streak+" "+plural(streak,"день","дня","дней")+" подряд</b> · всего выполнено: <b>"+Object.keys(done).length+"</b>";
+
+    var grid = "";
+    for(var i=13;i>=0;i--){
+      var dd = new Date(); dd.setDate(dd.getDate()-i);
+      var on = !!done[dayKey(dd)];
+      grid += '<i class="'+(on?"on":"")+(i===0?" today":"")+'" title="'+dayKey(dd)+'">'+(on?"✓":"·")+"</i>";
+    }
+    $("streakGrid").innerHTML = grid;
+  }
+
+  /* ---------- РЕНДЕР: ОПОРА ---------- */
+  function renderFaith(){
+    var html = "";
+    FAITH.forEach(function(f){
+      html += '<div class="ayah"><div class="ar">'+f.ar+'</div>'
+        + (f.tr ? '<div class="tr">'+f.tr+'</div>' : '')
+        + '<div class="ru">'+f.ru+'</div><div class="src">'+f.src+'</div></div>';
+    });
+    $("faithList").innerHTML = html;
+  }
+
+  /* ---------- НАСТРОЙКИ ---------- */
+  function fillSetup(){
+    if(state.quitAt){
+      var dt = new Date(state.quitAt);
+      var off = dt.getTimezoneOffset();
+      $("quitAt").value = new Date(dt.getTime()-off*60000).toISOString().slice(0,16);
+    }
+    $("perDay").value = state.perDay||"";
+    $("packPrice").value = state.packPrice||"";
+    $("packSize").value = state.packSize||"";
+  }
+  $("saveBtn").addEventListener("click", function(){
+    var v = $("quitAt").value;
+    if(!v){ alert("Укажи дату и время последней сигареты."); return; }
+    state.quitAt = new Date(v).toISOString();
+    state.perDay = +($("perDay").value||20);
+    state.packPrice = +($("packPrice").value||250);
+    state.packSize = +($("packSize").value||20);
+    save(); renderAll(); show("today");
+  });
+  $("resetBtn").addEventListener("click", function(){
+    if(!confirm("Начать отсчёт заново с этой минуты? Прошлая серия останется в сердце, но счётчик обнулится.")) return;
+    state.quitAt = new Date().toISOString();
+    save(); renderAll(); show("today");
+  });
+
+  /* ---------- ВЕХИ-ПОЗДРАВЛЕНИЯ ---------- */
+  function checkMilestone(){
+    var d = daysFloat();
+    var seen = state.seenMiles||{};
+    for(var i=0;i<MILES.length;i++){
+      var x = MILES[i];
+      if(d >= x.m && !seen[x.t]){
+        seen[x.t]=1; state.seenMiles=seen; save();
+        $("mfTitle").textContent = "Веха «"+x.t+"» пройдена!";
+        $("mfText").textContent = x.w;
+        $("mf").classList.add("show");
+        break;
+      }
+    }
+  }
+  $("mfClose").addEventListener("click", function(){ $("mf").classList.remove("show"); });
+
+  /* ---------- НАВИГАЦИЯ ---------- */
+  function show(name){
+    document.querySelectorAll(".screen").forEach(function(s){ s.classList.remove("active"); });
+    var scr = $("scr-"+name); if(scr) scr.classList.add("active");
+    document.querySelectorAll(".tab").forEach(function(t){
+      t.classList.toggle("active", t.dataset.scr===name);
+    });
+    window.scrollTo({top:0});
+  }
+  document.querySelectorAll(".tab").forEach(function(t){
+    t.addEventListener("click", function(){ show(t.dataset.scr); });
+  });
+  $("gearBtn").addEventListener("click", function(){ fillSetup(); show("setup"); });
+  $("doneBtn").addEventListener("click", function(){
+    var today = dayKey(new Date());
+    state.done = state.done||{}; state.done[today]=1; save(); renderTasks(); renderToday();
+  });
+
+  /* ---------- ЦИКЛ ---------- */
+  function renderAll(){ renderToday(); renderBody(); renderTasks(); renderFaith(); }
+  renderAll();
+  if(!state.quitAt){ fillSetup(); show("setup"); }
+  setInterval(function(){ renderToday(); }, 1000);
+  setInterval(function(){ renderBody(); checkMilestone(); }, 30000);
+  checkMilestone();
+})();
+</script>
