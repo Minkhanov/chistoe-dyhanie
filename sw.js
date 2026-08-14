@@ -1,8 +1,11 @@
 /* Чистое дыхание — офлайн-кэш */
-var CACHE = "chistoe-dyhanie-v2";
+var CACHE = "chistoe-dyhanie-v3";
 var ASSETS = [
   "./",
   "./index.html",
+  "./styles.css",
+  "./data.js",
+  "./app.js",
   "./manifest.webmanifest",
   "./icon-180.png",
   "./icon-192.png",
