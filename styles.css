@@ -1,0 +1,217 @@
+:root{
+    --ink:#0E2A26; --deep:#12332E; --card:#173D37; --line:#245247;
+    --mist:#E9F2EE; --paper:#F7FBF9; --pcard:#FFFFFF; --pline:#D3E4DD;
+    --pine:#1F6F5C; --pine-soft:#2E8A73; --gold:#D9A441; --gold-soft:#E7C077;
+    --bg:var(--mist); --surface:var(--pcard); --surface2:var(--paper);
+    --border:var(--pline); --text:#12332E; --text-soft:#476B62; --accent:var(--pine);
+    --accent-2:var(--gold); --ok:#2E8A73; --tap:44px;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{ --bg:var(--ink); --surface:var(--deep); --surface2:var(--card);
+      --border:var(--line); --text:#E9F2EE; --text-soft:#9DBFB4; --accent:#3FA88C; --accent-2:var(--gold-soft); }
+  }
+  :root[data-theme="dark"]{ --bg:var(--ink); --surface:var(--deep); --surface2:var(--card);
+      --border:var(--line); --text:#E9F2EE; --text-soft:#9DBFB4; --accent:#3FA88C; --accent-2:var(--gold-soft); }
+  :root[data-theme="light"]{ --bg:var(--mist); --surface:var(--pcard); --surface2:var(--paper);
+      --border:var(--pline); --text:#12332E; --text-soft:#476B62; --accent:var(--pine); --accent-2:var(--gold); }
+
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    background:var(--bg); color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,sans-serif;
+    line-height:1.5; -webkit-font-smoothing:antialiased;
+    padding-bottom:calc(76px + env(safe-area-inset-bottom,0px));
+    overscroll-behavior-y:none;
+  }
+  .wrap{max-width:430px;margin:0 auto;padding:0 16px}
+  .screen{display:none;animation:fade .25s ease}
+  .screen.active{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  @media (prefers-reduced-motion: reduce){ .screen{animation:none} }
+
+  header.app{
+    padding:calc(14px + env(safe-area-inset-top,0px)) 0 10px;
+    display:flex;align-items:center;justify-content:space-between;
+  }
+  .brand{font-family:ui-serif,"New York",Georgia,serif;font-size:20px;font-weight:600;letter-spacing:.2px}
+  .brand small{display:block;font-family:-apple-system,BlinkMacSystemFont,sans-serif;
+    font-size:11px;font-weight:500;color:var(--text-soft);letter-spacing:.08em;text-transform:uppercase}
+  .gear{width:var(--tap);height:var(--tap);background:var(--surface);color:var(--text-soft);
+    border-radius:12px;font-size:18px;display:grid;place-items:center;border:1px solid var(--border)}
+  .gear:focus-visible,.tab:focus-visible,button:focus-visible{outline:2px solid var(--accent-2);outline-offset:2px}
+
+  /* ГЕРОЙ-СЧЁТЧИК */
+  .hero{position:relative;background:var(--surface);border:1px solid var(--border);border-radius:20px;
+    padding:22px 18px 18px;overflow:hidden}
+  .hero::after{content:"";position:absolute;inset:auto -30% -55% -30%;height:70%;
+    background:radial-gradient(50% 60% at 50% 0%, color-mix(in srgb, var(--accent) 22%, transparent), transparent 70%);
+    pointer-events:none}
+  .ring{width:230px;height:230px;margin:4px auto 8px;position:relative;max-width:100%}
+  .ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+  .ring .track{stroke:var(--border);stroke-width:10;fill:none}
+  .ring .bar{stroke:var(--accent-2);stroke-width:10;fill:none;stroke-linecap:round;
+    transition:stroke-dashoffset .6s ease}
+  .ring .core{position:absolute;inset:0;display:grid;place-items:center;text-align:center}
+  .days{font-family:ui-serif,"New York",Georgia,serif;font-size:64px;font-weight:700;line-height:1;
+    font-variant-numeric:tabular-nums}
+  .days-label{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-soft);margin-top:4px}
+  .hms{margin-top:6px;font-size:15px;color:var(--text-soft);font-variant-numeric:tabular-nums}
+  .next-mile{margin-top:10px;text-align:center;font-size:13px;color:var(--text-soft)}
+  .next-mile b{color:var(--accent-2);font-weight:600}
+
+  .stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+  .stat{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:14px}
+  .stat .num{font-family:ui-serif,"New York",Georgia,serif;font-size:26px;font-weight:700;
+    font-variant-numeric:tabular-nums}
+  .stat .cap{font-size:11.5px;color:var(--text-soft);letter-spacing:.06em;text-transform:uppercase;margin-top:2px}
+  .stat.gold .num{color:var(--accent-2)}
+
+  .quote{margin-top:12px;background:var(--surface);border:1px solid var(--border);border-radius:16px;
+    padding:16px;font-family:ui-serif,"New York",Georgia,serif;font-size:16.5px;line-height:1.55}
+  .quote .who{margin-top:8px;font-family:-apple-system,sans-serif;font-size:12px;color:var(--text-soft);
+    letter-spacing:.05em;text-transform:uppercase}
+
+  h2.sec{font-family:ui-serif,"New York",Georgia,serif;font-size:22px;margin:22px 0 4px;text-wrap:balance}
+  h3.sub-sec{font-family:ui-serif,"New York",Georgia,serif;font-size:18px;margin:24px 0 8px}
+  p.sub{margin:0 0 14px;font-size:13.5px;color:var(--text-soft)}
+
+  /* карточка «прямо сейчас» */
+  .now-card{background:var(--surface);border:1px solid var(--accent-2);border-radius:18px;padding:16px;margin-bottom:16px}
+  .now-card .eyebrow{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent-2);font-weight:600}
+  .now-card h3{margin:6px 0 6px;font-family:ui-serif,"New York",Georgia,serif;font-size:19px}
+  .now-card p{margin:0;font-size:14.5px;color:var(--text-soft)}
+
+  /* ТЕЛО — таймлайн */
+  .tl{list-style:none;margin:0;padding:0;position:relative}
+  .tl::before{content:"";position:absolute;left:15px;top:8px;bottom:8px;width:2px;
+    background:var(--border);border-radius:2px}
+  .tl li{position:relative;padding:0 0 14px 44px}
+  .tl .dot{position:absolute;left:7px;top:4px;width:18px;height:18px;border-radius:50%;
+    background:var(--surface);border:2px solid var(--border);display:grid;place-items:center;font-size:10px;color:transparent}
+  .tl li.done .dot{background:var(--accent);border-color:var(--accent);color:#fff}
+  .tl li.now .dot{border-color:var(--accent-2);box-shadow:0 0 0 4px color-mix(in srgb, var(--accent-2) 25%, transparent)}
+  .tl .card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:12px 14px}
+  .tl li.done .card{border-color:color-mix(in srgb, var(--accent) 45%, var(--border))}
+  .tl .when{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-soft)}
+  .tl li.done .when{color:var(--accent)}
+  .tl li.now .when{color:var(--accent-2)}
+  .tl .what{font-size:14.5px;margin-top:2px}
+  .tl .why{font-size:13px;color:var(--text-soft);margin-top:6px;padding-top:6px;border-top:1px dashed var(--border)}
+  .tl .bar{height:5px;border-radius:3px;background:var(--border);margin-top:9px;overflow:hidden}
+  .tl .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-2));
+    border-radius:3px;transition:width .5s ease}
+  .tl .pct{font-size:11px;color:var(--text-soft);margin-top:4px;font-variant-numeric:tabular-nums}
+
+  /* информационные блоки */
+  .info{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:15px 16px;margin-bottom:12px}
+  .info h4{margin:0 0 8px;font-size:15.5px;font-family:ui-serif,"New York",Georgia,serif}
+  .info p{margin:0 0 8px;font-size:14px;color:var(--text-soft)}
+  .info p:last-child{margin-bottom:0}
+  .info ul{margin:8px 0 0;padding-left:18px;font-size:14px;color:var(--text-soft)}
+  .info li{margin-bottom:6px}
+  .info li b{color:var(--text);font-weight:600}
+  .info .num-hi{color:var(--accent-2);font-weight:700}
+
+  /* график ломки */
+  .wd{display:grid;gap:8px;margin-top:4px}
+  .wd-row{display:grid;grid-template-columns:78px 1fr;gap:10px;align-items:center;font-size:13.5px}
+  .wd-row .lbl{color:var(--text-soft);font-size:12px;text-align:right}
+  .wd-row .track{position:relative;height:24px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+  .wd-row .fill{position:absolute;top:0;bottom:0;background:linear-gradient(90deg,
+      color-mix(in srgb, var(--accent-2) 70%, transparent), color-mix(in srgb, var(--accent) 55%, transparent))}
+  .wd-row .txt{position:absolute;inset:0;display:flex;align-items:center;padding-left:8px;font-size:11.5px;color:var(--text)}
+  .wd-scale{display:grid;grid-template-columns:78px 1fr;gap:10px;font-size:10.5px;color:var(--text-soft);margin-top:2px}
+  .wd-scale .marks{display:flex;justify-content:space-between}
+
+  /* приёмы при тяге */
+  .trick{display:flex;gap:12px;align-items:flex-start;background:var(--surface);border:1px solid var(--border);
+    border-radius:14px;padding:13px 14px;margin-bottom:10px}
+  .trick .n{flex:0 0 30px;height:30px;border-radius:9px;background:var(--surface2);border:1px solid var(--border);
+    display:grid;place-items:center;font-weight:700;color:var(--accent-2);font-size:14px}
+  .trick .b{font-size:14.5px}
+  .trick .b small{display:block;color:var(--text-soft);font-size:13px;margin-top:3px}
+
+  .src-note{font-size:12px;color:var(--text-soft);margin-top:14px;padding-top:10px;border-top:1px solid var(--border)}
+
+  /* ЗАДАНИЯ */
+  .task-day{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:16px}
+  .task-day .eyebrow{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent-2);font-weight:600}
+  .task-day h3{margin:6px 0 8px;font-family:ui-serif,"New York",Georgia,serif;font-size:19px}
+  .task-day p{margin:0;font-size:14.5px;color:var(--text-soft)}
+  .task-read{margin-top:12px;padding:13px;border-radius:12px;background:var(--surface2);
+    border:1px dashed var(--border);font-family:ui-serif,"New York",Georgia,serif;font-size:15.5px;line-height:1.55}
+  .check{margin-top:14px;display:flex;gap:10px;align-items:center}
+  .btn{flex:1;min-height:var(--tap);border:none;border-radius:13px;font-size:15.5px;font-weight:600;
+    background:var(--accent);color:#fff;cursor:pointer;font-family:inherit}
+  .btn[disabled]{background:var(--ok);opacity:.92}
+  .btn.ghost{background:transparent;color:var(--accent);border:1.5px solid var(--accent)}
+  .streak{display:flex;gap:6px;margin-top:14px;flex-wrap:wrap}
+  .streak i{width:26px;height:26px;border-radius:8px;background:var(--surface2);border:1px solid var(--border);
+    display:grid;place-items:center;font-style:normal;font-size:12px;color:var(--text-soft)}
+  .streak i.on{background:var(--accent);border-color:var(--accent);color:#fff}
+  .streak i.today{outline:2px solid var(--accent-2);outline-offset:1px}
+  .progress-line{margin-top:10px;font-size:13px;color:var(--text-soft)}
+  .progress-line b{color:var(--text)}
+
+  /* ОПОРА — вера */
+  .ayah{background:var(--surface);border:1px solid var(--border);border-left:4px solid var(--accent-2);
+    border-radius:14px;padding:15px 16px;margin-bottom:12px}
+  .ayah .ar{font-size:21px;line-height:1.9;text-align:right;direction:rtl;
+    font-family:"Geeza Pro","Al Nile","Traditional Arabic",serif}
+  .ayah .tr{margin-top:9px;font-size:13.5px;font-style:italic;color:var(--accent);line-height:1.5}
+  .ayah .ru{margin-top:8px;font-family:ui-serif,"New York",Georgia,serif;font-size:15.5px;line-height:1.55}
+  .ayah .why{margin-top:9px;padding-top:9px;border-top:1px dashed var(--border);font-size:13.5px;color:var(--text-soft)}
+  .ayah .src{margin-top:8px;font-size:12px;color:var(--text-soft);letter-spacing:.05em;text-transform:uppercase}
+  .note{background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:13px 15px;
+    font-size:13.5px;color:var(--text-soft);margin-bottom:12px}
+  .dua{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px 15px;margin-bottom:10px}
+  .dua .ar{font-size:19px;line-height:1.9;text-align:right;direction:rtl;font-family:"Geeza Pro","Al Nile",serif}
+  .dua .tr{margin-top:7px;font-size:13px;font-style:italic;color:var(--accent)}
+  .dua .ru{margin-top:6px;font-size:14.5px}
+  .dua .when{margin-top:7px;font-size:12.5px;color:var(--text-soft)}
+  .dua.read{position:relative;padding-top:16px;border-left:4px solid var(--accent)}
+  .dua.read .step{position:absolute;top:-10px;left:12px;min-width:26px;height:26px;padding:0 7px;
+    border-radius:9px;background:var(--accent);color:#fff;font-size:13px;font-weight:700;
+    display:grid;place-items:center}
+  .dua.read .zn{margin-top:9px;padding-top:9px;border-top:1px dashed var(--border);
+    font-size:13.5px;color:var(--text-soft);line-height:1.55}
+  .dua.read .zn b{color:var(--text)}
+
+  /* НАСТРОЙКИ */
+  .field{margin-bottom:14px}
+  .field label{display:block;font-size:12.5px;letter-spacing:.05em;text-transform:uppercase;
+    color:var(--text-soft);margin-bottom:6px}
+  .field input{width:100%;min-height:var(--tap);border:1px solid var(--border);border-radius:12px;
+    background:var(--surface);color:var(--text);font-size:16px;padding:0 14px;
+    font-variant-numeric:tabular-nums;font-family:inherit}
+  .hint{font-size:12.5px;color:var(--text-soft);margin-top:-6px;margin-bottom:14px}
+
+  /* ТАБЫ */
+  nav.tabs{position:fixed;left:0;right:0;bottom:0;z-index:10;
+    background:color-mix(in srgb, var(--bg) 88%, transparent);
+    -webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
+    border-top:1px solid var(--border);
+    padding:8px 10px calc(8px + env(safe-area-inset-bottom,0px))}
+  .tabs .row{max-width:430px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+  .tab{min-height:52px;border:none;background:transparent;color:var(--text-soft);border-radius:12px;
+    font-size:11px;letter-spacing:.02em;display:grid;place-items:center;gap:2px;cursor:pointer;font-family:inherit}
+  .tab .ico{font-size:20px;line-height:1}
+  .tab.active{color:var(--accent);background:color-mix(in srgb, var(--accent) 12%, transparent);font-weight:600}
+
+  .milestone-flash{position:fixed;inset:0;display:none;place-items:center;z-index:50;
+    background:color-mix(in srgb, var(--ink) 55%, transparent)}
+  .milestone-flash.show{display:grid}
+  .mf-card{background:var(--surface);border:1px solid var(--accent-2);border-radius:20px;
+    padding:26px 22px;max-width:320px;text-align:center;margin:0 16px}
+  .mf-card .big{font-size:40px}
+  .mf-card h3{font-family:ui-serif,"New York",Georgia,serif;margin:8px 0}
+  .mf-card p{color:var(--text-soft);font-size:14px;margin:0 0 16px}
+
+  /* подсказка «поставить на экран» */
+  .a2hs{background:var(--surface);border:1px dashed var(--accent-2);border-radius:14px;padding:13px 15px;
+    margin-top:14px;font-size:13.5px;color:var(--text-soft)}
+  .a2hs b{color:var(--text)}
+  .a2hs button{margin-top:10px;min-height:38px;padding:0 14px;border-radius:10px;border:1px solid var(--border);
+    background:var(--surface2);color:var(--text-soft);font-size:13px;font-family:inherit}
