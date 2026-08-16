@@ -220,10 +220,16 @@
   /* ---------- ПОДСКАЗКА «НА ЭКРАН ДОМОЙ» ---------- */
   (function(){
     var standalone = window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true;
-    if(standalone || state.a2hsHidden) return;
+    if(standalone){ document.documentElement.classList.add("standalone"); return; }
+    if(state.a2hsHidden) return;
     var ua = navigator.userAgent || "";
     var isIOS = /iPad|iPhone|iPod/.test(ua);
-    if(!isIOS){
+    var inApp = /Telegram|Instagram|VKClient|VKApp|FBAN|FBAV|WhatsApp|YaBrowser.*broApp|MailRuApp/i.test(ua);
+    if(isIOS && inApp){
+      $("a2hsHow").innerHTML = "Ты в браузере внутри другого приложения — тут кнопки установки нет. "
+        + "Нажми <b>⋯</b> (или значок компаса/стрелки) → <b>«Открыть в Safari»</b>, "
+        + "а там: «Поделиться» ⬆︎ → «На экран Домой».";
+    } else if(!isIOS){
       $("a2hsHow").textContent = "Меню браузера ⋮ → «Установить приложение» или «Добавить на главный экран».";
     }
     $("a2hs").hidden = false;
@@ -231,6 +237,25 @@
       state.a2hsHidden = 1; save(); $("a2hs").hidden = true;
     });
   })();
+
+  /* ---------- КНОПКИ «СКОПИРОВАТЬ» (напоминания) ---------- */
+  Array.prototype.forEach.call(document.querySelectorAll("button.copy"), function(b){
+    b.addEventListener("click", function(){
+      var t = b.getAttribute("data-copy") || "";
+      function ok(){ var was = b.textContent; b.textContent = "Скопировано ✓"; b.disabled = true;
+        setTimeout(function(){ b.textContent = was; b.disabled = false; }, 1800); }
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(t).then(ok, function(){ fallback(); });
+      } else { fallback(); }
+      function fallback(){
+        var ta = document.createElement("textarea"); ta.value = t;
+        ta.style.position = "fixed"; ta.style.opacity = "0";
+        document.body.appendChild(ta); ta.focus(); ta.select();
+        try{ document.execCommand("copy"); ok(); }catch(e){ alert(t); }
+        document.body.removeChild(ta);
+      }
+    });
+  });
 
   /* ---------- ЦИКЛ ---------- */
   function renderAll(){ renderToday(); renderBody(); renderTasks(); renderFaith(); }
