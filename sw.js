@@ -1,5 +1,5 @@
 /* Чистое дыхание — офлайн-кэш */
-var CACHE = "chistoe-dyhanie-v3";
+var CACHE = "chistoe-dyhanie-v4";
 var ASSETS = [
   "./",
   "./index.html",
