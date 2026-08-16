@@ -4,6 +4,7 @@
   "description": "Счётчик дней без сигарет, восстановление организма по срокам и опора веры.",
   "lang": "ru",
   "dir": "ltr",
+  "id": "./",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
