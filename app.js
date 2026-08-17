@@ -128,7 +128,8 @@
   /* ---------- РЕНДЕР: ОПОРА ---------- */
   function renderFaith(){
     var html = "";
-    FAITH.forEach(function(f){
+    var faithAll = (typeof FAITH2 !== "undefined") ? FAITH.concat(FAITH2) : FAITH;
+    faithAll.forEach(function(f){
       html += '<div class="ayah"><div class="ar">'+f.ar+'</div>'
         + (f.tr ? '<div class="tr">'+esc(f.tr)+'</div>' : '')
         + '<div class="ru">'+esc(f.ru)+'</div>'
@@ -153,6 +154,29 @@
         + '<div class="zn"><b>Значение.</b> '+esc(MORNING_DUA.zn)+'</div>'
         + '<div class="when">Как читать: '+esc(MORNING_DUA.how)+'</div></div>';
     $("readList").innerHTML = dh;
+  }
+
+  /* ---------- РЕНДЕР-СТАТИКА: наука, мужское, аманат (один раз) ---------- */
+  function renderStatic(){
+    if(typeof VRED_NAUKA !== "undefined" && $("naukaList")){
+      $("naukaList").innerHTML = VRED_NAUKA.map(function(x){
+        return '<div class="info sci"><div class="eyebrow">'+esc(x.org)+'</div>'
+          + '<div class="sci-num">'+esc(x.num)+'</div>'
+          + '<h4>'+esc(x.t)+'</h4><p>'+esc(x.p)+'</p></div>';
+      }).join("");
+    }
+    if(typeof MUZH !== "undefined" && $("muzhList")){
+      $("muzhList").innerHTML = MUZH.map(function(x){
+        return '<div class="info"><h4>'+esc(x.t)+'</h4><p>'+esc(x.p)+'</p></div>';
+      }).join("");
+    }
+    if(typeof AMANAT !== "undefined" && $("amanatList")){
+      $("amanatList").innerHTML = AMANAT.map(function(x){
+        return '<div class="ayah"><div class="ru">'+esc(x.ru)+'</div>'
+          + '<div class="why">'+esc(x.zn)+'</div>'
+          + '<div class="src">'+esc(x.src)+'</div></div>';
+      }).join("");
+    }
   }
 
   /* ---------- НАСТРОЙКИ ---------- */
@@ -260,6 +284,7 @@
   /* ---------- ЦИКЛ ---------- */
   function renderAll(){ renderToday(); renderBody(); renderTasks(); renderFaith(); }
   renderAll();
+  renderStatic();
   if(!state.quitAt){ fillSetup(); show("setup"); }
   setInterval(function(){ renderToday(); }, 1000);
   setInterval(function(){ renderBody(); checkMilestone(); }, 30000);
